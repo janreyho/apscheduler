@@ -9,7 +9,7 @@ and run it with ``python -m server``.
 
 import rpyc
 from rpyc.utils.server import ThreadedServer
-
+from pytz import utc
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
@@ -44,7 +44,7 @@ class SchedulerService(rpyc.Service):
 
 
 if __name__ == '__main__':
-    scheduler = BackgroundScheduler()
+    scheduler = BackgroundScheduler(timezone=utc)
     scheduler.start()
     protocol_config = {'allow_public_attrs': True}
     server = ThreadedServer(SchedulerService, port=12345, protocol_config=protocol_config)
