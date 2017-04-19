@@ -10,6 +10,8 @@ and run it with ``python -m server``.
 import rpyc
 from rpyc.utils.server import ThreadedServer
 from pytz import utc
+from pymongo import MongoClient
+from apscheduler.jobstores.mongodb import MongoDBJobStore
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
@@ -45,6 +47,9 @@ class SchedulerService(rpyc.Service):
 
 if __name__ == '__main__':
     scheduler = BackgroundScheduler(timezone=utc)
+    client = MongoClient('mongodb://127.0.0.1:27017/blusql')
+    jobstore = MongoDBJobStore(client=client, database='blusql', collection='apscheduljobs')
+    scheduler.add_jobstore(jobstore)
     scheduler.start()
     protocol_config = {'allow_public_attrs': True}
     server = ThreadedServer(SchedulerService, port=12345, protocol_config=protocol_config)
