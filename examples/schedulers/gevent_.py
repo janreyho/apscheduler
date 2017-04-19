@@ -5,7 +5,7 @@ intervals.
 
 from datetime import datetime
 import os
-
+from pytz import utc
 from apscheduler.schedulers.gevent import GeventScheduler
 
 
@@ -14,7 +14,7 @@ def tick():
 
 
 if __name__ == '__main__':
-    scheduler = GeventScheduler()
+    scheduler = GeventScheduler(timezone=utc)
     scheduler.add_job(tick, 'interval', seconds=3)
     g = scheduler.start()  # g is the greenlet that runs the scheduler loop
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))

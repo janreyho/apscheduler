@@ -5,6 +5,7 @@ second intervals.
 
 from datetime import datetime
 import os
+from pytz import utc
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
@@ -19,7 +20,7 @@ def tick():
 
 
 if __name__ == '__main__':
-    scheduler = AsyncIOScheduler()
+    scheduler = AsyncIOScheduler(timezone=utc)
     scheduler.add_job(tick, 'interval', seconds=3)
     scheduler.start()
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))

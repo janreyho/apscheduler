@@ -5,7 +5,7 @@ second intervals.
 
 from datetime import datetime
 import os
-
+from pytz import utc
 from twisted.internet import reactor
 from apscheduler.schedulers.twisted import TwistedScheduler
 
@@ -15,7 +15,7 @@ def tick():
 
 
 if __name__ == '__main__':
-    scheduler = TwistedScheduler()
+    scheduler = TwistedScheduler(timezone=utc)
     scheduler.add_job(tick, 'interval', seconds=3)
     scheduler.start()
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
